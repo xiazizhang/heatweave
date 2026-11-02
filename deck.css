@@ -9,8 +9,8 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { width: 100%; height: 100%; overflow: hidden; background: var(--graphite); }
 body { font-family: var(--cn); color: var(--ink); -webkit-font-smoothing: antialiased; }
-#viewport { position: fixed; inset: 0; display: grid; place-items: center; transition: background-color .9s ease; }
-#stage { position: relative; width: 1920px; height: 1080px; transform-origin: 50% 50%; overflow: hidden; }
+#viewport { position: fixed; inset: 0; display: block; transition: background-color .9s ease; }
+#stage { position: absolute; left: 50%; top: 50%; margin-left: -960px; margin-top: -540px; width: 1920px; height: 1080px; transform-origin: 50% 50%; overflow: hidden; }
 #bg { position: absolute; inset: 0; transition: background-color .9s ease; }
 #gl { position: absolute; inset: 0; width: 1920px; height: 1080px; transition: opacity .7s ease; }
 #overlay { position: absolute; inset: 0; pointer-events: none; }

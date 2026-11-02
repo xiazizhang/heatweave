@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>热织 HeatWeave · 结题汇报</title>
+<link rel="stylesheet" href="deck.css">
+</head>
+<body>
+<div id="viewport">
+  <div id="stage">
+    <div id="bg"></div>
+    <canvas id="gl" width="1920" height="1080"></canvas>
+    <svg id="overlay" width="1920" height="1080" viewBox="0 0 1920 1080"></svg>
+<section class="slide" data-shot="cover" data-bg="#F5F5F3" data-chapter="-1">
+  <div class="abs" style="left:120px;top:150px">
+    <div class="num" style="font-size:22px;letter-spacing:.32em;color:var(--ink2)">HEATWEAVE</div>
+    <div style="font-family:var(--cnl);font-weight:300;font-size:200px;line-height:1;margin-top:26px;letter-spacing:.06em">热织</div>
+    <p class="h2" style="margin-top:44px">在大学路的热浪里，<br>一台读得懂人的<br>遮阳装置</p>
+  </div>
+  <div class="abs small muted" style="left:120px;bottom:120px;line-height:1.8">
+    设计课结题汇报<br>上海杨浦，大学路周末步行街<br>2026 年 11 月
+  </div>
+  <aside class="notes">开场：我们的项目叫“热织”。它是一台放在大学路周末步行街上的遮阳装置，但它不是一把普通的伞——它会感知太阳和热，会读懂坐在下面的人在做什么，然后一片一片地调整自己的叶子。右边就是我们 Grasshopper 模型的实时三维版本，后面每一页都会用到它。</aside>
+</section>
+
+<section class="slide" data-shot="none" data-bg="#F5F5F3" data-chapter="-1">
+  <p class="h2 abs" style="left:120px;top:140px">一天里太阳走过的路，<br>也是这次汇报的顺序</p>
+  <svg class="abs" style="left:0;top:0" width="1920" height="1080" viewBox="0 0 1920 1080">
+    <defs>
+      <linearGradient id="arcG" x1="0" x2="1">
+        <stop offset="0" stop-color="#F6C979"/><stop offset=".45" stop-color="#D2392A"/>
+        <stop offset=".75" stop-color="#8E959A"/><stop offset="1" stop-color="#23282C"/>
+      </linearGradient>
+    </defs>
+    <path d="M200 900 A 760 560 0 0 1 1720 900" fill="none" stroke="url(#arcG)" stroke-width="3"/>
+    <line x1="120" y1="900" x2="1800" y2="900" stroke="#22272B" stroke-opacity=".18"/>
+    <circle cx="272" cy="661" r="15" fill="#F6C979"/><circle cx="272" cy="661" r="27" fill="none" stroke="#F6C979" stroke-opacity=".35"/><circle cx="680" cy="379" r="15" fill="#E05A30"/><circle cx="680" cy="379" r="27" fill="none" stroke="#E05A30" stroke-opacity=".35"/><circle cx="1240" cy="379" r="15" fill="#9AA0A4"/><circle cx="1240" cy="379" r="27" fill="none" stroke="#9AA0A4" stroke-opacity=".35"/><circle cx="1648" cy="661" r="15" fill="#23282C"/><circle cx="1648" cy="661" r="27" fill="none" stroke="#23282C" stroke-opacity=".35"/>
+  </svg>
+  <div class="abs" style="left:132px;top:713px;width:280px;text-align:center"><div class="num" style="font-size:20px;color:var(--ink2)">一</div><div class="h3" style="margin-top:6px">热从哪里来</div><div class="small muted" style="margin-top:4px">上海的热浪与大学路的阳光</div></div><div class="abs" style="left:540px;top:431px;width:280px;text-align:center"><div class="num" style="font-size:20px;color:var(--ink2)">二</div><div class="h3" style="margin-top:6px">一个会动的遮阳者</div><div class="small muted" style="margin-top:4px">上层追太阳，下层读人</div></div><div class="abs" style="left:1100px;top:431px;width:280px;text-align:center"><div class="num" style="font-size:20px;color:var(--ink2)">三</div><div class="h3" style="margin-top:6px">如果我是它</div><div class="small muted" style="margin-top:4px">我怎么看、怎么想、怎么动</div></div><div class="abs" style="left:1508px;top:713px;width:280px;text-align:center"><div class="num" style="font-size:20px;color:var(--ink2)">四</div><div class="h3" style="margin-top:6px">它真的会这样动吗</div><div class="small muted" style="margin-top:4px">模拟、交互模型与 MR</div></div>
+  <aside class="notes">故事线分四段，对应老师提的四个问题：热从哪里来、我们设计了什么、如果我是这台智能体我怎么工作、最后它真的会这样动吗。整个汇报的背景色也会跟着变——从刺眼的白，到阴影里的灰。</aside>
+</section>
+
+<section class="slide" data-shot="none" data-bg="#F5F5F3" data-chapter="0" data-anim="heat">
+  <p class="h2 abs" style="left:120px;top:120px">6 月 14 日午后一点，<br>大学路三分之一的地面<br>暴露在阳光下</p>
+  <div class="abs" style="left:1180px;top:118px;width:620px">
+    <div><span class="big heat" id="heatShare">35</span><span class="unit heat">%</span></div>
+    <p class="small muted" style="margin-top:14px;max-width:24em">的分析网格累计辐射高于 230 Wh/m²。<br>全街 267 m × 38 m，101,348 个 0.32 m 网格，Ladybug 逐时累计辐射。</p>
+  </div>
+  <canvas id="heatStrip" class="abs" width="1676" height="242" style="left:122px;top:470px;width:1676px;height:242px"></canvas>
+  <svg class="abs" style="left:0;top:0;pointer-events:none" width="1920" height="1080">
+    <line x1="122" y1="716" x2="122" y2="726" stroke="#22272B" stroke-opacity=".4"/><text x="122" y="748" text-anchor="middle" font-family="Bahnschrift" font-size="16" fill="#5D666C">0 m</text><line x1="435" y1="716" x2="435" y2="726" stroke="#22272B" stroke-opacity=".4"/><text x="435" y="748" text-anchor="middle" font-family="Bahnschrift" font-size="16" fill="#5D666C">50 m</text><line x1="748" y1="716" x2="748" y2="726" stroke="#22272B" stroke-opacity=".4"/><text x="748" y="748" text-anchor="middle" font-family="Bahnschrift" font-size="16" fill="#5D666C">100 m</text><line x1="1061" y1="716" x2="1061" y2="726" stroke="#22272B" stroke-opacity=".4"/><text x="1061" y="748" text-anchor="middle" font-family="Bahnschrift" font-size="16" fill="#5D666C">150 m</text><line x1="1374" y1="716" x2="1374" y2="726" stroke="#22272B" stroke-opacity=".4"/><text x="1374" y="748" text-anchor="middle" font-family="Bahnschrift" font-size="16" fill="#5D666C">200 m</text><line x1="1686" y1="716" x2="1686" y2="726" stroke="#22272B" stroke-opacity=".4"/><text x="1686" y="748" text-anchor="middle" font-family="Bahnschrift" font-size="16" fill="#5D666C">250 m</text><line x1="1022" y1="440" x2="1022" y2="466" stroke="#D2392A"/><text x="1022" y="430" text-anchor="middle" font-family="DengXian" font-size="17" fill="#D2392A">路口</text>
+  </svg>
+  <div class="abs" style="left:120px;top:800px;display:flex;align-items:center;gap:22px">
+    <canvas id="heatLegend" width="560" height="28" style="width:560px;height:14px;border-radius:2px"></canvas>
+    <span class="small muted num">0　　　230　　　575 Wh/m²</span>
+  </div>
+  <p class="small muted abs" style="left:120px;top:842px;max-width:42em">灰色是阴影里的网格——树冠、骑楼与建筑挡住了太阳；只有高于阈值的网格才被染上热色。</p>
+  <div class="abs small" id="heatProbe" style="left:120px;top:418px;color:var(--ink2)">把鼠标移到街道上，读取每个网格的辐射值</div>
+  <aside class="notes">这张图是我们用原始 CSV 重新画的，每一个小方格就是 Ladybug 的一个分析网格。灰色是阴影，颜色只出现在辐射高于 230 Wh/m² 的地方。整条街 35% 的地面在暴晒，而且这些热色集中在中间——也就是周末开放给行人的原车道。</aside>
+</section>
+
+<section class="slide" data-shot="none" data-bg="#F5F5F3" data-chapter="0">
+  <p class="h2 abs" style="left:120px;top:110px">树荫留给了人行道，<br>周末的车道却没有遮挡</p>
+  <svg class="abs" style="left:0;top:0" width="1920" height="1080" viewBox="0 0 1920 1080">
+<defs><linearGradient id="profG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D2392A" stop-opacity=".9"/><stop offset=".6" stop-color="#EF8B3D" stop-opacity=".55"/><stop offset="1" stop-color="#F6C979" stop-opacity=".25"/></linearGradient></defs>
+<rect x="160" y="310" width="64" height="250" fill="#C9CDCD"/><rect x="1342" y="260" width="417" height="300" fill="#C9CDCD"/><rect x="1342" y="440" width="96" height="8" fill="#8E959A"/><line x1="354" y1="560" x2="354" y2="430" stroke="#5D666C" stroke-width="5"/><ellipse cx="354" cy="410" rx="60" ry="46" fill="#AEB4B7"/><line x1="533" y1="560" x2="533" y2="430" stroke="#5D666C" stroke-width="5"/><ellipse cx="533" cy="410" rx="60" ry="46" fill="#AEB4B7"/><line x1="1063" y1="560" x2="1063" y2="430" stroke="#5D666C" stroke-width="5"/><ellipse cx="1063" cy="410" rx="60" ry="46" fill="#AEB4B7"/><line x1="1242" y1="560" x2="1242" y2="430" stroke="#5D666C" stroke-width="5"/><ellipse cx="1242" cy="410" rx="60" ry="46" fill="#AEB4B7"/><line x1="120" y1="560" x2="1800" y2="560" stroke="#22272B" stroke-opacity=".5"/><rect x="683" y="557" width="234" height="6" fill="#D2392A"/><line x1="872" y1="230" x2="692" y2="552" stroke="#EF8B3D" stroke-opacity=".55" stroke-width="2"/><line x1="926" y1="230" x2="746" y2="552" stroke="#EF8B3D" stroke-opacity=".55" stroke-width="2"/><line x1="980" y1="230" x2="800" y2="552" stroke="#EF8B3D" stroke-opacity=".55" stroke-width="2"/><line x1="1034" y1="230" x2="854" y2="552" stroke="#EF8B3D" stroke-opacity=".55" stroke-width="2"/><line x1="1088" y1="230" x2="908" y2="552" stroke="#EF8B3D" stroke-opacity=".55" stroke-width="2"/>
+<line x1="160" y1="930" x2="1760" y2="930" stroke="#22272B" stroke-opacity=".08"/><text x="150" y="935" text-anchor="end" font-family="Bahnschrift" font-size="16" fill="#5D666C">0%</text><line x1="160" y1="785.0" x2="1760" y2="785.0" stroke="#22272B" stroke-opacity=".08"/><text x="150" y="790.0" text-anchor="end" font-family="Bahnschrift" font-size="16" fill="#5D666C">50%</text><line x1="160" y1="640" x2="1760" y2="640" stroke="#22272B" stroke-opacity=".08"/><text x="150" y="645" text-anchor="end" font-family="Bahnschrift" font-size="16" fill="#5D666C">100%</text>
+<path d="M160.0 930.0 L160.0 905.6 L173.4 902.4 L186.7 897.9 L200.1 881.8 L213.4 863.3 L226.8 845.5 L240.1 829.8 L253.5 816.6 L266.8 814.1 L280.2 815.7 L293.5 819.0 L306.9 823.6 L320.2 830.8 L333.6 836.3 L346.9 839.5 L360.3 841.8 L373.6 842.5 L386.5 840.3 L399.9 839.3 L413.2 840.2 L426.6 841.1 L439.9 839.9 L453.3 841.1 L466.6 843.2 L480.0 845.7 L493.4 847.5 L506.7 850.2 L520.1 852.5 L533.4 849.0 L546.8 845.3 L560.1 839.8 L573.5 836.4 L586.8 830.6 L600.2 827.6 L613.5 825.0 L626.9 822.6 L640.2 814.7 L653.6 803.0 L666.9 786.2 L680.3 759.2 L693.6 725.4 L707.0 695.2 L719.9 669.5 L733.2 650.7 L746.6 641.3 L759.9 640.5 L773.3 640.9 L786.6 641.9 L800.0 643.6 L813.4 649.3 L826.7 658.9 L840.1 672.4 L853.4 687.9 L866.8 707.6 L880.1 727.1 L893.5 746.7 L906.8 765.8 L920.2 784.7 L933.5 800.0 L946.9 812.8 L960.2 821.9 L973.6 828.6 L986.9 834.0 L1000.3 838.8 L1013.6 842.8 L1027.0 847.9 L1040.3 851.4 L1053.2 854.0 L1066.6 855.6 L1079.9 856.2 L1093.3 855.0 L1106.6 854.7 L1120.0 854.8 L1133.4 855.4 L1146.7 856.2 L1160.1 856.4 L1173.4 856.4 L1186.8 856.0 L1200.1 856.4 L1213.5 856.0 L1226.8 853.3 L1240.2 848.5 L1253.5 842.5 L1266.9 833.0 L1280.2 821.2 L1293.6 812.3 L1306.9 808.5 L1320.3 815.7 L1333.6 828.4 L1347.0 844.9 L1360.3 860.4 L1373.7 874.0 L1386.6 878.6 L1399.9 881.6 L1413.3 884.9 L1426.6 889.3 L1440.0 892.2 L1453.4 893.8 L1466.7 893.9 L1480.1 893.9 L1493.4 894.1 L1506.8 893.7 L1520.1 894.3 L1533.5 894.8 L1546.8 894.9 L1560.2 894.6 L1573.5 894.8 L1586.9 894.7 L1600.2 895.1 L1613.6 895.3 L1626.9 895.5 L1640.3 895.8 L1653.6 895.9 L1667.0 895.9 L1680.3 895.1 L1693.7 894.6 L1707.0 893.9 L1719.9 892.8 L1733.3 893.9 L1746.6 894.4 L1760.0 894.9 L1760.0 930.0 Z" fill="url(#profG)"/>
+<path d="M160.0 905.6 L173.4 902.4 L186.7 897.9 L200.1 881.8 L213.4 863.3 L226.8 845.5 L240.1 829.8 L253.5 816.6 L266.8 814.1 L280.2 815.7 L293.5 819.0 L306.9 823.6 L320.2 830.8 L333.6 836.3 L346.9 839.5 L360.3 841.8 L373.6 842.5 L386.5 840.3 L399.9 839.3 L413.2 840.2 L426.6 841.1 L439.9 839.9 L453.3 841.1 L466.6 843.2 L480.0 845.7 L493.4 847.5 L506.7 850.2 L520.1 852.5 L533.4 849.0 L546.8 845.3 L560.1 839.8 L573.5 836.4 L586.8 830.6 L600.2 827.6 L613.5 825.0 L626.9 822.6 L640.2 814.7 L653.6 803.0 L666.9 786.2 L680.3 759.2 L693.6 725.4 L707.0 695.2 L719.9 669.5 L733.2 650.7 L746.6 641.3 L759.9 640.5 L773.3 640.9 L786.6 641.9 L800.0 643.6 L813.4 649.3 L826.7 658.9 L840.1 672.4 L853.4 687.9 L866.8 707.6 L880.1 727.1 L893.5 746.7 L906.8 765.8 L920.2 784.7 L933.5 800.0 L946.9 812.8 L960.2 821.9 L973.6 828.6 L986.9 834.0 L1000.3 838.8 L1013.6 842.8 L1027.0 847.9 L1040.3 851.4 L1053.2 854.0 L1066.6 855.6 L1079.9 856.2 L1093.3 855.0 L1106.6 854.7 L1120.0 854.8 L1133.4 855.4 L1146.7 856.2 L1160.1 856.4 L1173.4 856.4 L1186.8 856.0 L1200.1 856.4 L1213.5 856.0 L1226.8 853.3 L1240.2 848.5 L1253.5 842.5 L1266.9 833.0 L1280.2 821.2 L1293.6 812.3 L1306.9 808.5 L1320.3 815.7 L1333.6 828.4 L1347.0 844.9 L1360.3 860.4 L1373.7 874.0 L1386.6 878.6 L1399.9 881.6 L1413.3 884.9 L1426.6 889.3 L1440.0 892.2 L1453.4 893.8 L1466.7 893.9 L1480.1 893.9 L1493.4 894.1 L1506.8 893.7 L1520.1 894.3 L1533.5 894.8 L1546.8 894.9 L1560.2 894.6 L1573.5 894.8 L1586.9 894.7 L1600.2 895.1 L1613.6 895.3 L1626.9 895.5 L1640.3 895.8 L1653.6 895.9 L1667.0 895.9 L1680.3 895.1 L1693.7 894.6 L1707.0 893.9 L1719.9 892.8 L1733.3 893.9 L1746.6 894.4 L1760.0 894.9" fill="none" stroke="#D2392A" stroke-width="2.5"/>
+<line x1="208" y1="930" x2="208" y2="938" stroke="#22272B" stroke-opacity=".4"/><text x="208" y="962" text-anchor="middle" font-family="Bahnschrift" font-size="16" fill="#5D666C">-15 m</text><line x1="416" y1="930" x2="416" y2="938" stroke="#22272B" stroke-opacity=".4"/><text x="416" y="962" text-anchor="middle" font-family="Bahnschrift" font-size="16" fill="#5D666C">-10 m</text><line x1="625" y1="930" x2="625" y2="938" stroke="#22272B" stroke-opacity=".4"/><text x="625" y="962" text-anchor="middle" font-family="Bahnschrift" font-size="16" fill="#5D666C">-5 m</text><line x1="833" y1="930" x2="833" y2="938" stroke="#22272B" stroke-opacity=".4"/><text x="833" y="962" text-anchor="middle" font-family="Bahnschrift" font-size="16" fill="#5D666C">+0 m</text><line x1="1042" y1="930" x2="1042" y2="938" stroke="#22272B" stroke-opacity=".4"/><text x="1042" y="962" text-anchor="middle" font-family="Bahnschrift" font-size="16" fill="#5D666C">+5 m</text><line x1="1251" y1="930" x2="1251" y2="938" stroke="#22272B" stroke-opacity=".4"/><text x="1251" y="962" text-anchor="middle" font-family="Bahnschrift" font-size="16" fill="#5D666C">+10 m</text><line x1="1459" y1="930" x2="1459" y2="938" stroke="#22272B" stroke-opacity=".4"/><text x="1459" y="962" text-anchor="middle" font-family="Bahnschrift" font-size="16" fill="#5D666C">+15 m</text><line x1="1668" y1="930" x2="1668" y2="938" stroke="#22272B" stroke-opacity=".4"/><text x="1668" y="962" text-anchor="middle" font-family="Bahnschrift" font-size="16" fill="#5D666C">+20 m</text>
+</svg>
+  <div class="abs" style="left:1250px;top:110px;width:330px">
+    <span class="big heat" style="font-size:96px">98</span><span class="unit heat">%</span>
+    <div class="small" style="margin-top:6px">原车道中央的暴晒网格</div>
+  </div>
+  <div class="abs" style="left:1560px;top:110px;width:300px">
+    <span class="big" style="font-size:96px;color:var(--ink2)">27</span><span class="unit" style="color:var(--ink2)">%</span>
+    <div class="small muted" style="margin-top:6px">两侧行道树下的暴晒网格</div>
+  </div>
+  <p class="small muted abs" style="left:160px;top:962px">曲线：沿横断面统计每排网格中高于 230 Wh/m² 的比例；上方为同一坐标的示意剖面。</p>
+  <aside class="notes">把整条街按横断面切开统计：每一排网格里有多少比例在暴晒。中间那条峰就是原车道，98% 的网格高于阈值；两侧有行道树的地方只有 27% 左右。周末车道开放之后，人恰恰在这条最热的带子上停留——这就是我们要解决的问题。</aside>
+</section>
+
+<section class="slide" data-shot="agent" data-bg="#E4E6E5" data-chapter="1">
+  <p class="h2 abs" style="left:120px;top:120px">一个会读人的<br>遮阳者</p>
+  <p class="body abs muted" style="left:120px;top:300px;max-width:15em">它被推到车道中央，周末部署，平日撤回。三向座椅本身就是停留的地方，头顶的八片叶子分成两层，各自回应不同的东西。</p>
+  <div class="abs" style="left:120px;top:560px;width:470px">
+    <div class="rule-row" style="grid-template-columns:120px 1fr"><div class="k">上层 3 片</div><div class="v">只做水平旋转，追随太阳，把阴影送到最热、最需要的地方</div></div>
+    <div class="rule-row" style="grid-template-columns:120px 1fr"><div class="k">下层 5 片</div><div class="v">升降、转向、翻转、左右端点下压，跟随坐在下面的人</div></div>
+    <div class="rule-row" style="grid-template-columns:120px 1fr"><div class="k">中柱</div><div class="v">中空通风核心，内置机构与 ZED 深度相机</div></div>
+  </div>
+  <aside class="notes">我们的回答是一台会读人的遮阳装置。上层三片叶子负责天气，只做水平旋转；下层五片负责人，有五个独立的动作。中柱里装着深度相机，它就是这台装置的眼睛。</aside>
+</section>
+
+<section class="slide" data-shot="dof" data-bg="#E4E6E5" data-chapter="1">
+  <p class="h2 abs" style="left:120px;top:120px">每片下层叶子，<br>有五个独立的动作</p>
+  <div class="abs dof-list" style="left:120px;top:400px;width:560px">
+    <div class="dof" data-k="0"><span class="sym num">h</span><span class="nm">整体升降</span><span class="rg num">−0.6 – 0 m</span><span class="why">调节头顶净空</span></div>
+    <div class="dof" data-k="1"><span class="sym num">ψ</span><span class="nm">水平转向</span><span class="rg num">±12°</span><span class="why">服务面转向使用者</span></div>
+    <div class="dof" data-k="2"><span class="sym num">θ</span><span class="nm">前后翻转</span><span class="rg num">±8°</span><span class="why">调节前方开口</span></div>
+    <div class="dof" data-k="3"><span class="sym num">δL</span><span class="nm">左端下压</span><span class="rg num">≤ 0.20 m</span><span class="why">左侧单独收拢</span></div>
+    <div class="dof" data-k="4"><span class="sym num">δR</span><span class="nm">右端下压</span><span class="rg num">≤ 0.20 m</span><span class="why">右侧单独收拢</span></div>
+  </div>
+  <p class="small muted abs" style="left:120px;top:900px;max-width:30em">左右端点互不牵连，可以同时下降、幅度不同。动作顺序与 Grasshopper 运动链一致：端点 → 翻转 → 转向 → 升降。</p>
+  <aside class="notes">下层每片叶子有五个动作：升降、水平转向、前后翻转、左端下压、右端下压。右边这片高亮的叶子正在依次演示。转轴和顺序都是从 Grasshopper 模型里反求出来的，和电池里的运动链一致。</aside>
+</section>
+
+<section class="slide" data-shot="eye" data-bg="#C9CDCD" data-chapter="2">
+  <p class="display abs" style="left:120px;top:130px">如果我是它</p>
+  <p class="body abs" style="left:120px;top:300px;max-width:17em">我站在车道中央，每 0.35 秒从中柱上的相机看一眼脚下的街道。每一次，我都回答同样的四个问题。</p>
+  <ol class="abs iam" style="left:120px;top:520px;width:640px">
+    <li><span class="num">1</span><b>太阳在哪里，哪里最热？</b><em>上层叶子转向</em></li>
+    <li><span class="num">2</span><b>下面坐着谁，他在做什么？</b><em>读取骨骼与活动</em></li>
+    <li><span class="num">3</span><b>五片叶子各该怎么动？</b><em>地面灰阶 → 25 个目标</em></li>
+    <li><span class="num">4</span><b>动完之后，他还舒服吗？</b><em>下一帧重新看</em></li>
+  </ol>
+  <aside class="notes">接下来换一个视角：如果我就是这台装置，我怎么工作？右边是我从中柱相机看下去的视角。每一帧我都回答四个问题：太阳在哪、下面的人在做什么、五片叶子该怎么动、动完之后要不要修正。后面几页就按这四个问题展开。</aside>
+</section>
+
+<section class="slide" data-shot="weather" data-bg="#C9CDCD" data-chapter="2">
+  <div class="abs num" style="left:120px;top:120px;font-size:22px;color:var(--ink2)">问题 1</div>
+  <p class="h2 abs" style="left:120px;top:162px">太阳在移动，<br>上层叶子跟着它转</p>
+  <div class="abs tabs" id="wxTabs" style="left:120px;top:400px">
+    <button class="tab" data-i="0">上午</button><button class="tab" data-i="1">正午</button>
+    <button class="tab" data-i="2">午后西晒</button><button class="tab" data-i="3">傍晚</button>
+  </div>
+  <div class="abs num" id="wxRead" style="left:120px;top:478px;font-size:20px;color:var(--ink2)"></div>
+  <div class="abs" style="left:120px;top:560px;width:560px">
+    <div class="rule-row"><div class="k">读什么</div><div class="v">整街静态辐射与此刻的太阳方向</div></div>
+    <div class="rule-row"><div class="k">怎么选</div><div class="v">每片叶子 24 个采样点，统计投影落在 230 Wh/m² 以上区域的比例；三片在最多 512 种组合里协同选角</div></div>
+    <div class="rule-row"><div class="k">原则</div><div class="v">先离开阴影里的蓝区，再减少彼此重叠；必要时允许叠合加厚</div></div>
+  </div>
+  <p class="small muted abs" style="left:120px;top:960px;max-width:34em">此处三维演示为简化版：把阴影送到人所在一侧。真实选角在 Grasshopper 中按辐射数据搜索。</p>
+  <aside class="notes">第一个问题：太阳在哪里。上层三片叶子只做水平旋转，在 Grasshopper 里它们读取整街的静态辐射图和太阳方向，每片 24 个采样点，三片协同在最多 512 种组合里选角度，把投影送到最热的地方。这里的三维是简化演示，你可以点上面的时段看阴影怎么移动。</aside>
+</section>
+
+<section class="slide" data-shot="none" data-bg="#C9CDCD" data-chapter="2" data-anim="skel">
+  <div class="abs num" style="left:120px;top:120px;font-size:22px;color:var(--ink2)">问题 2</div>
+  <p class="h2 abs" style="left:120px;top:162px">下面坐着谁，<br>他在做什么？</p>
+  <svg id="skel" class="abs" style="left:760px;top:110px" width="1040" height="860" viewBox="0 0 1040 860"></svg>
+  <div class="abs" style="left:120px;top:420px;width:560px">
+    <div class="rule-row"><div class="k">头顶高度</div><div class="v">决定叶子要留出的净空。头部点不足时用胸部上方 0.35 m 估算，并标注“估算”</div></div>
+    <div class="rule-row"><div class="k">躯干前倾 λ</div><div class="v">骨盆到胸椎的倾角，前倾为正，进入翻转公式</div></div>
+    <div class="rule-row"><div class="k">头部俯仰 α</div><div class="v">低头看手机，还是抬头看街道</div></div>
+    <div class="rule-row"><div class="k">稳定度 Cs</div><div class="v">3 秒内头部转动的波动：Cs = 1 − clamp(√(σ水平² + σ俯仰²) / 10°, 0, 1)。它衡量几何上的稳定，不代表专注</div></div>
+  </div>
+  <p class="small muted abs" style="left:120px;top:930px;max-width:34em">活动标签（工作 / 休息 / 向外观察）原计划由视觉大模型给出，接口已留在电池里；目前手动选择。骨骼只给连续数值，不冒充行为识别。</p>
+  <aside class="notes">第二个问题：下面坐着谁，在做什么。ZED 相机给出 34 个关键点，我们只取四个连续量：头顶高度、躯干前倾、头部俯仰，以及 3 秒窗口里头部的稳定度。活动类别本来想让大模型来判断，接口和权重都留在电池里了，但目前是手动选择——我们不让骨骼去假装识别行为。</aside>
+</section>
+
+<section class="slide" data-shot="modes" data-bg="#C9CDCD" data-chapter="2">
+  <div class="abs num" style="left:120px;top:120px;font-size:22px;color:var(--ink2)">问题 3</div>
+  <p class="h2 abs" style="left:120px;top:162px">同一个人做不同的事，<br>需要不同的阴影</p>
+  <div class="abs tabs" id="modeTabs" style="left:120px;top:400px">
+    <button class="tab" data-i="0">工作 · 看手机</button><button class="tab" data-i="1">休息</button><button class="tab" data-i="2">向外观察</button>
+  </div>
+  <div class="abs" style="left:120px;top:490px;width:580px">
+    <p class="body" id="mDesc" style="min-height:3.6em"></p>
+    <div class="rule-row"><div class="k">头顶净空</div><div class="v num" id="mClear"></div></div>
+    <div class="rule-row"><div class="k">前后翻转 θ</div><div class="v num" id="mTheta"></div></div>
+    <div class="rule-row"><div class="k">端点最大下压</div><div class="v num" id="mDelta"></div></div>
+  </div>
+  <p class="small muted abs" style="left:120px;top:960px;max-width:34em">“工作时更围合”是我们设定的设计规则，并不是模型证明了人想被隔开；开放程度可以调整。</p>
+  <aside class="notes">第三个问题的第一层：活动。工作看手机时，净空最小 0.35 米，叶子随身体前倾往下翻，形成紧凑的个人空间；休息时净空 0.55 米，轻轻包裹；向外观察时净空 0.75 米，膜边要让出视线。右边的尺寸线是实时算出来的头顶到叶片最低点的距离。</aside>
+</section>
+
+<section class="slide" data-shot="fields" data-bg="#B9BEBF" data-chapter="2">
+  <p class="h2 abs" style="left:120px;top:120px">所有判断，<br>最后都落在地面的灰阶上</p>
+  <p class="body abs" style="left:120px;top:290px;max-width:16em">一个数无法同时决定五个动作，所以我在地面上画五张 0–1 的灰阶，白色表示那个动作要响应得更强。</p>
+  <div class="abs" id="fieldMinis" style="left:120px;top:520px;display:grid;grid-template-columns:repeat(5,104px);gap:14px"></div>
+  <div class="abs" style="left:120px;top:720px;width:620px">
+    <p class="formula" style="font-size:19px;white-space:nowrap">G = clamp( (w动作·G动作 + w环境·G环境 + w人物·G人物) / Σw , 0, 1 )</p>
+    <p class="small muted" style="margin-top:14px;max-width:34em">现在只有动作权重为 1；环境与人物两项是留给辐射评分和大模型的入口。每片叶子在自己的方向上取 4 个径向采样点求平均，再把灰阶解码成自己的 h、ψ、θ、δL、δR。</p>
+  </div>
+  <aside class="notes">这是整个系统的核心：所有评分最终都落到地面的灰阶上。因为一个标量没法同时控制五个动作，所以是五张平行的灰阶场。地面上显示的是其中一张，左边五个小图是五张同时在算的场，人在走动时它们一起变化。每片叶子取自己方向上的四个采样点求平均，再解码成自己的动作。</aside>
+</section>
+
+<section class="slide" data-shot="sides" data-bg="#B9BEBF" data-chapter="2">
+  <p class="h2 abs" style="left:120px;top:120px">旁边有人经过，<br>只收拢那一侧</p>
+  <p class="body abs" style="left:120px;top:300px;max-width:16em">左右端点各有一条独立的旋转链。外部影响来自哪一侧，只有那一侧的端点会下压，另一侧保持开放。</p>
+  <div class="abs" style="left:120px;top:520px;width:580px">
+    <p class="formula">δ = δmax × 外部压力 × (1 − 开口保护)</p>
+    <div class="rule-row" style="margin-top:18px"><div class="k">δmax</div><div class="v num">工作 0.20 m　休息 0.10 m　观察 0.05 m</div></div>
+    <div class="rule-row"><div class="k">换算</div><div class="v">端点转角 = atan(δ / 0.7 m 力臂)</div></div>
+    <div class="rule-row"><div class="k">此刻</div><div class="v num" id="sideRead"></div></div>
+  </div>
+  <p class="small muted abs" style="left:120px;top:960px;max-width:34em">外部压力目前是手动输入：系统只跟踪一个服务对象，不会凭空推断周边人数。</p>
+  <aside class="notes">两侧边界：当左边有人经过，只有左端下压，右边保持开放。下压量等于模式最大值乘以外部压力，再乘以一减开口保护，通过 0.7 米力臂换算成转角。这个压力目前是手动输入——因为我们只跟踪一个人。</aside>
+</section>
+
+<section class="slide" data-shot="none" data-bg="#B9BEBF" data-chapter="2" data-anim="trace">
+  <div class="abs num" style="left:120px;top:120px;font-size:22px;color:var(--ink2)">问题 4</div>
+  <p class="h2 abs" style="left:120px;top:162px">动完之后再看一次，<br>但不追每一次转头</p>
+  <svg id="trace" class="abs" style="left:120px;top:420px" width="1100" height="470" viewBox="0 0 1100 470"></svg>
+  <div class="abs" style="left:1300px;top:420px;width:500px">
+    <div class="rule-row" style="grid-template-columns:150px 1fr"><div class="k num">0.5 s</div><div class="v">新目标要持续半秒才被接受</div></div>
+    <div class="rule-row" style="grid-template-columns:150px 1fr"><div class="k num">20 mm · 2°</div><div class="v">小于这个幅度的变化不动作</div></div>
+    <div class="rule-row" style="grid-template-columns:150px 1fr"><div class="k num">30 mm/s · 3°/s</div><div class="v">升降与转角的速度上限</div></div>
+    <div class="rule-row" style="grid-template-columns:150px 1fr"><div class="k num">τ = 1 + 2Cs</div><div class="v">越稳定，动得越慢；其他活动 1.5 s</div></div>
+    <div class="rule-row" style="grid-template-columns:150px 1fr"><div class="k">换人</div><div class="v">跟踪编号改变，立刻清空历史</div></div>
+  </div>
+  <p class="small muted abs" style="left:120px;top:920px;max-width:48em">图中为同一套滤波规则的实时模拟：浅线是每帧算出的目标升降，深线是叶子实际的动作。人在 6 秒时坐下、12 秒时站起。</p>
+  <aside class="notes">第四个问题：动完之后怎么办。我每 0.35 秒都会重新看，但不能每次转头都跟着动。所以有五条时间规则：目标要保持半秒、20 毫米和 2 度以内不动、限速、时间常数随稳定度变化、换人清空历史。图里浅线是每帧目标，深线是叶子真正的动作，可以看到它平滑地跟随，而不是抖动。</aside>
+</section>
+
+<section class="slide dark" data-shot="none" data-bg="#2B3135" data-chapter="2">
+  <p class="h2 abs" style="left:120px;top:120px">把四个问题<br>连成一圈</p>
+  <p class="body abs muted" style="left:120px;top:300px;max-width:14em">这就是最终实现的技术路线：感知、判断、行动，然后带着动作的结果回到下一帧。</p>
+  <div class="abs small" style="left:120px;top:540px;width:560px;line-height:2.1">
+    <div><svg width="26" height="20" style="vertical-align:-4px"><circle cx="10" cy="10" r="8" fill="#F5F5F3"/></svg>已在 Grasshopper 中实现并实时运行</div>
+    <div><svg width="26" height="20" style="vertical-align:-4px"><circle cx="10" cy="10" r="8" fill="none" stroke="#F6C979" stroke-width="2" stroke-dasharray="4 4"/></svg>接口与权重已留，尚未接入</div>
+    <div><svg width="26" height="20" style="vertical-align:-4px"><line x1="2" y1="10" x2="22" y2="10" stroke="#8E959A" stroke-dasharray="3 5" stroke-width="2"/></svg>测试后放弃：<s>多人行为判定</s>，成员与交流关系无法稳定识别</div>
+    <div><svg width="26" height="20" style="vertical-align:-4px"><line x1="2" y1="10" x2="22" y2="10" stroke="#EF8B3D" stroke-width="3"/></svg>反馈：动作改变遮阳与人的姿态</div>
+  </div>
+  <p class="small muted abs" style="left:120px;top:880px;max-width:26em">闭环目前在数字模型中运行：叶片实际几何回传给下一帧，尚未连接电机。</p>
+  <svg class="abs" style="left:0;top:0" width="1920" height="1080" viewBox="0 0 1920 1080"><circle cx="1230" cy="545" r="300" fill="none" stroke="#F5F5F3" stroke-opacity=".22" stroke-width="2"/><path id="fbArc" d="M1098.5 814.6 A300 300 0 0 1 1029.3 322.1" fill="none" stroke="#EF8B3D" stroke-width="3"/><path id="loopPath" d="M1230 245 A300 300 0 1 1 1229.9 245" fill="none" stroke="none"/><circle cx="965.1" cy="404.2" r="10" fill="#F5F5F3"/><text x="935.1" y="384.2" text-anchor="end" font-family="DengXian" font-weight="700" font-size="22" fill="#F5F5F3">整街累计辐射</text><text x="935.1" y="410.2" text-anchor="end" font-family="DengXian" font-size="16" fill="#B9BFC2">Ladybug 静态基底</text><circle cx="1062.2" cy="296.3" r="10" fill="#F5F5F3"/><text x="1043.2" y="250.1" text-anchor="end" font-family="DengXian" font-weight="700" font-size="22" fill="#F5F5F3">ZED 深度相机</text><text x="1043.2" y="276.1" text-anchor="end" font-family="DengXian" font-size="16" fill="#B9BFC2">BODY34 · 约 350 ms 一帧</text><circle cx="1198.6" cy="246.6" r="11" fill="#2B3135" stroke="#F6C979" stroke-width="2" stroke-dasharray="4 4"/><text x="1195.1" y="194.8" text-anchor="middle" font-family="DengXian" font-weight="700" font-size="22" fill="#F6C979">视觉大模型</text><text x="1195.1" y="220.8" text-anchor="middle" font-family="DengXian" font-size="16" fill="#B9BFC2">活动标签与人物评分</text><circle cx="1397.8" cy="296.3" r="10" fill="#F5F5F3"/><text x="1416.8" y="250.1" text-anchor="start" font-family="DengXian" font-weight="700" font-size="22" fill="#F5F5F3">加权灰阶源</text><text x="1416.8" y="276.1" text-anchor="start" font-family="DengXian" font-size="16" fill="#B9BFC2">G = Σw·G / Σw</text><circle cx="1499.6" cy="413.5" r="10" fill="#F5F5F3"/><text x="1530.2" y="394.6" text-anchor="start" font-family="DengXian" font-weight="700" font-size="22" fill="#F5F5F3">五张地面灰阶</text><text x="1530.2" y="420.6" text-anchor="start" font-family="DengXian" font-size="16" fill="#B9BFC2">H  Y  P  L  R</text><circle cx="1529.3" cy="565.9" r="10" fill="#F5F5F3"/><text x="1563.2" y="564.3" text-anchor="start" font-family="DengXian" font-weight="700" font-size="22" fill="#F5F5F3">单人规则解码</text><text x="1563.2" y="590.3" text-anchor="start" font-family="DengXian" font-size="16" fill="#B9BFC2">每片 4 点径向采样</text><circle cx="1438.4" cy="760.8" r="10" fill="#F5F5F3"/><text x="1462.0" y="799.3" text-anchor="start" font-family="DengXian" font-weight="700" font-size="22" fill="#F5F5F3">上层水平旋转</text><text x="1462.0" y="825.3" text-anchor="start" font-family="DengXian" font-size="16" fill="#B9BFC2">追随高辐射区</text><circle cx="1302.6" cy="836.1" r="10" fill="#F5F5F3"/><text x="1310.8" y="883.1" text-anchor="start" font-family="DengXian" font-weight="700" font-size="22" fill="#F5F5F3">25 通道时间滤波</text><text x="1310.8" y="909.1" text-anchor="start" font-family="DengXian" font-size="16" fill="#B9BFC2">保持 · 死区 · 限速</text><circle cx="1147.3" cy="833.4" r="10" fill="#F5F5F3"/><text x="1137.9" y="880.1" text-anchor="end" font-family="DengXian" font-weight="700" font-size="22" fill="#F5F5F3">叶片几何</text><text x="1137.9" y="906.1" text-anchor="end" font-family="DengXian" font-size="16" fill="#B9BFC2">Grasshopper 原生电池</text><circle cx="955.9" cy="667.0" r="13" fill="#EF8B3D"/><text x="924.9" y="676.9" text-anchor="end" font-family="DengXian" font-weight="700" font-size="22" fill="#F5F5F3">遮阳与姿态改变</text><text x="924.9" y="702.9" text-anchor="end" font-family="DengXian" font-size="16" fill="#B9BFC2">进入下一帧</text><text x="1101.4" y="364.3" text-anchor="middle" font-family="DengXian Light" font-size="34" fill="#F5F5F3" fill-opacity=".85">感知</text><text x="1436.7" y="454.2" text-anchor="middle" font-family="DengXian Light" font-size="34" fill="#F5F5F3" fill-opacity=".85">判断</text><text x="1285.6" y="778.2" text-anchor="middle" font-family="DengXian Light" font-size="34" fill="#F5F5F3" fill-opacity=".85">行动</text><text x="1019.9" y="648.5" text-anchor="middle" font-family="DengXian Light" font-size="34" fill="#F5F5F3" fill-opacity=".85">再感知</text><text x="1230" y="539" text-anchor="middle" font-family="Bahnschrift" font-weight="300" font-size="64" fill="#F5F5F3">350<tspan font-size="26"> ms</tspan></text><text x="1230" y="579" text-anchor="middle" font-family="DengXian" font-size="18" fill="#B9BFC2">每一圈，就是一帧</text><circle r="9" fill="#EF8B3D"><animateMotion dur="5s" repeatCount="indefinite" rotate="0"><mpath href="#loopPath"/></animateMotion></circle></svg>
+  <aside class="notes">这是我们最终实现的技术循环。感知：整街辐射基底和 ZED 骨骼，大模型那一环接口已留但还没接；判断：加权得到灰阶源、落成五张地面灰阶、每片叶子解码；行动：上层旋转、25 个通道时间滤波、驱动 Grasshopper 里的真实叶片；动作改变了遮阳和人的姿态，下一帧再看。左上那条灰色虚线是多人行为——我们测试过，判定不了，所以放弃了，只服务单人。</aside>
+</section>
+
+<section class="slide dark" data-shot="none" data-bg="#3A4146" data-chapter="3">
+  <p class="h2 abs" style="left:120px;top:110px">它真的会这样动吗？先在模型里试</p>
+  <div class="abs tabs" id="simTabs" style="left:120px;top:228px">
+    <button class="tab on" data-i="0">交互模型</button><button class="tab" data-i="1">模拟录像（2 倍速）</button>
+  </div>
+  <div class="abs" style="left:120px;top:300px;width:1138px;height:640px;border-radius:6px;overflow:hidden;background:#23282C">
+    <iframe id="simFrame" data-src="interactive/index.html" title="交互模型" style="width:1920px;height:1080px;border:0;transform:scale(.5926);transform-origin:0 0;display:block"></iframe>
+    <video id="simVideo" src="media/walkthrough_2x.mp4" muted loop playsinline preload="none" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:none;background:#23282C"></video>
+  </div>
+  <div class="abs" style="left:1340px;top:300px;width:460px">
+    <div class="rule-row" style="grid-template-columns:110px 1fr"><div class="k">拖动</div><div class="v">把人拖到装置下，3 m 以外叶子回到中性</div></div>
+    <div class="rule-row" style="grid-template-columns:110px 1fr"><div class="k">切换</div><div class="v">站、坐、蹲与三种活动，看净空与翻转怎样变</div></div>
+    <div class="rule-row" style="grid-template-columns:110px 1fr"><div class="k">施压</div><div class="v">调一侧外部压力，只有那一侧端点下压</div></div>
+    <div class="rule-row" style="grid-template-columns:110px 1fr"><div class="k">换天气</div><div class="v">太阳移动，上层叶子与阴影跟着走</div></div>
+    <p class="small muted" style="margin-top:22px">使用 Grasshopper 导出的真实叶片几何与同一套规则。</p>
+  </div>
+  <aside class="notes">验证第一步是模拟。这里嵌入的是交互模型，可以直接拖动这个人，切换坐站蹲和三种活动，看五片叶子怎么回应。旁边的录像是自动漫游，两倍速播放。</aside>
+</section>
+
+<section class="slide dark" data-shot="none" data-bg="#3A4146" data-chapter="3">
+  <p class="h2 abs" style="left:120px;top:110px">再把它放回街道的尺度里</p>
+  <div class="abs" id="mrBox" style="left:120px;top:250px;width:1100px;height:619px;border-radius:6px;overflow:hidden;background:#2B3135">
+    <video id="mrVideo" controls playsinline preload="metadata" style="width:100%;height:100%;object-fit:contain;display:block"><source src="media/mr.mp4" type="video/mp4" onerror="var v=this.parentNode;v.style.display='none';document.getElementById('mrEmpty').style.display='grid'"></video>
+    <div id="mrEmpty" style="position:absolute;inset:0;display:none;place-items:center;text-align:center;border:1.5px dashed rgba(245,245,243,.28);border-radius:6px">
+      <div><div class="h3">MR 现场录屏</div><p class="small muted" style="margin-top:10px">把视频命名为 mr.mp4，放进 media 文件夹，刷新即可播放</p></div>
+    </div>
+  </div>
+  <div class="abs" style="left:1300px;top:250px;width:500px">
+    <div class="rule-row" style="grid-template-columns:130px 1fr"><div class="k">尺度</div><div class="v">装置与树冠、建筑、车道宽度的关系</div></div>
+    <div class="rule-row" style="grid-template-columns:130px 1fr"><div class="k">净空</div><div class="v">坐、站、蹲时头顶到叶片最低点的距离</div></div>
+    <div class="rule-row" style="grid-template-columns:130px 1fr"><div class="k">视线</div><div class="v">向外观察时，膜边是否让出了街道</div></div>
+    <div class="rule-row" style="grid-template-columns:130px 1fr"><div class="k">边界</div><div class="v">MR 检验的是空间体验，不能单独证明降温或舒适</div></div>
+  </div>
+  <aside class="notes">验证第二步是 MR：把装置叠加到现场，检验尺度、净空和视线。需要说明，MR 检验的是空间体验，不能单独证明降温效果。</aside>
+</section>
+
+<section class="slide dark" data-shot="end" data-bg="#23282C" data-chapter="3">
+  <p class="display abs" style="left:120px;top:150px">让临时开放的<br>街道，拥有会<br>回应人的阴影</p>
+  <div class="abs" style="left:120px;top:600px;width:640px">
+    <div class="rule-row" style="grid-template-columns:120px 1fr"><div class="k">已实现</div><div class="v">辐射基底驱动上层选向；骨骼驱动下层五个动作；五张灰阶与时间滤波组成的实时数字闭环</div></div>
+    <div class="rule-row" style="grid-template-columns:120px 1fr"><div class="k">边界</div><div class="v">只服务单人；大模型标签未接入；未连接电机，未做降温实测</div></div>
+    <div class="rule-row" style="grid-template-columns:120px 1fr"><div class="k">下一步</div><div class="v">接入活动标签与人物评分；遮阳后的环境再计算；实体机构现场联调</div></div>
+  </div>
+  <p class="small muted abs" style="left:120px;top:990px">谢谢</p>
+  <aside class="notes">最后总结：我们实现了辐射驱动上层、骨骼驱动下层、五张灰阶加时间滤波的实时数字闭环。边界是只服务单人、大模型还没接、没有接电机。下一步是接入活动标签、做遮阳后的环境再计算和实体联调。谢谢大家。</aside>
+</section>
+
+    <div id="sunpath"></div>
+    <div id="counter" class="num"></div>
+  </div>
+</div>
+<div id="notes"></div>
+<div id="help">← → 翻页　F 全屏　N 讲稿</div>
+<script src="data/model_data.js"></script>
+<script src="data/heat_data.js"></script>
+<script src="deck.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+HeatWeave 热织 · 结题汇报（HTML 版）
+
+打开：用 Chrome 或 Edge 双击 index.html（离线可用，无需服务器）。
+
+翻页：← → 或空格；Home / End 跳到首页 / 末页
+全屏：F
+讲稿：N（底部显示当前页的讲稿）
+直接跳页：地址栏末尾加 #页码，例如 index.html#12
+
+第 16 页 MR 视频：把录屏命名为 mr.mp4，放进 media 文件夹，刷新即可播放。
+第 15 页嵌入了交互模型（interactive 文件夹），可以直接拖动人物；切到“模拟录像”播放 2 倍速漫游视频。
+
+文件夹：
+  index.html / deck.css / deck.js   汇报本体
+  data/model_data.js                由 Grasshopper 导出的真实装置几何
+  data/heat_data.js                 由 0614_1300_sum.csv 重采样的整街辐射网格
+  interactive/                      交互模型
+  media/                            视频
